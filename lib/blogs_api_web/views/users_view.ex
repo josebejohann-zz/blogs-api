@@ -7,7 +7,7 @@ defmodule BlogsAPIWeb.UsersView do
     }
   end
 
-  def render("index.json", %{users: users}) do
-    users
-  end
+  def render("index.json", %{users: users}), do: users
+
+  def render("user.json", %{user: user}), do: user
 end

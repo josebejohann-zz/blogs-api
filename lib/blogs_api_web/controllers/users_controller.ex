@@ -30,4 +30,12 @@ defmodule BlogsAPIWeb.UsersController do
       |> render("index.json", users: users)
     end
   end
+
+  def show(conn, %{"id" => id}) do
+    with {:ok, %User{} = user} <- BlogsAPI.show_user(id) do
+      conn
+      |> put_status(:ok)
+      |> render("user.json", user: user)
+    end
+  end
 end

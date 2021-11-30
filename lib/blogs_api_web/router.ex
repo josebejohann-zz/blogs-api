@@ -12,13 +12,13 @@ defmodule BlogsAPIWeb.Router do
   scope "/", BlogsAPIWeb do
     pipe_through :api
 
-    resources "/users", UsersController, except: [:new, :edit, :index]
+    post "/user", UsersController, :create
     post "/login", UsersController, :sign_in
   end
 
   scope "/", BlogsAPIWeb do
     pipe_through :auth
 
-    get "/users", UsersController, :index
+    resources "/user", UsersController, except: [:new, :edit, :create]
   end
 end
