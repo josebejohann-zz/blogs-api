@@ -12,6 +12,10 @@ config :blogs_api,
   ecto_repos: [BlogsAPI.Repo],
   generators: [binary_id: true]
 
+config :blogs_api, BlogsAPI.Repo,
+  migration_primary_key: [type: :binary_id],
+  migration_foreign_key: [type: :binary_id]
+
 # Configures the endpoint
 config :blogs_api, BlogsAPIWeb.Endpoint,
   url: [host: "localhost"],
