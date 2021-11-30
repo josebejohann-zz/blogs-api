@@ -5,7 +5,9 @@ defmodule BlogsAPIWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", BlogsAPIWeb do
+  scope "/", BlogsAPIWeb do
     pipe_through :api
+
+    resources "/users", UsersController, except: [:new, :edit]
   end
 end
