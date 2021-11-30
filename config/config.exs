@@ -20,6 +20,10 @@ config :blogs_api, BlogsAPIWeb.Auth.Guardian,
   issuer: "blogs_api",
   secret_key: "YsVPWFjj2qlXe5ZQNkOcxbsORrCcojS5y67KJXSJ6wEqSDjeqElRSI0OluOs3lc/"
 
+config :blogs_api, BlogsAPIWeb.Auth.Pipeline,
+  module: BlogsAPIWeb.Auth.Guardian,
+  error_handler: BlogsAPIWeb.Auth.ErrorHandler
+
 # Configures the endpoint
 config :blogs_api, BlogsAPIWeb.Endpoint,
   url: [host: "localhost"],
