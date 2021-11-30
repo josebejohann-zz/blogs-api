@@ -22,4 +22,12 @@ defmodule BlogsAPIWeb.UsersController do
       |> render("create.json", token: token)
     end
   end
+
+  def index(conn, _) do
+    with {:ok, users} <- BlogsAPI.list_users() do
+      conn
+      |> put_status(:ok)
+      |> render("index.json", users: users)
+    end
+  end
 end
