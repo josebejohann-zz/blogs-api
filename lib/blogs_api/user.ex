@@ -10,7 +10,7 @@ defmodule BlogsAPI.User do
 
   @required_params [:displayName, :email, :password]
 
-  @derive {Jason.Encoder, only: [:displayName, :email, :image]}
+  @derive {Jason.Encoder, only: [:id, :displayName, :email, :image]}
 
   schema "users" do
     field :displayName, :string
