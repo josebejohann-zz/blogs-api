@@ -9,4 +9,11 @@ defmodule BlogsAPI.Users.Get do
       user -> {:ok, user}
     end
   end
+
+  def by_email(email) do
+    case Repo.get_by(User, email: email) do
+      nil -> {:error, Error.user_not_found()}
+      user -> {:ok, user}
+    end
+  end
 end
