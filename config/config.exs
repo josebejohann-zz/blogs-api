@@ -16,6 +16,10 @@ config :blogs_api, BlogsAPI.Repo,
   migration_primary_key: [type: :binary_id],
   migration_foreign_key: [type: :binary_id]
 
+config :blogs_api, BlogsAPIWeb.Auth.Guardian,
+  issuer: "blogs_api",
+  secret_key: "YsVPWFjj2qlXe5ZQNkOcxbsORrCcojS5y67KJXSJ6wEqSDjeqElRSI0OluOs3lc/"
+
 # Configures the endpoint
 config :blogs_api, BlogsAPIWeb.Endpoint,
   url: [host: "localhost"],
