@@ -1,9 +1,7 @@
 defmodule BlogsAPI do
-  @moduledoc """
-  BlogsAPI keeps the contexts that define your domain
-  and business logic.
+  @moduledoc false
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  alias BlogsAPI.Users.Create, as: UserCreate
+
+  defdelegate create_user(params), to: UserCreate, as: :call
 end
