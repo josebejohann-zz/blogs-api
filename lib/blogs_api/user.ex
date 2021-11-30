@@ -25,7 +25,8 @@ defmodule BlogsAPI.User do
   def changeset(params) do
     %__MODULE__{}
     |> cast(params, @required_params)
-    |> validate_required(@required_params)
+    |> validate_required([:email])
+    |> validate_required([:password])
     |> validate_length(:displayName, min: 8)
     |> validate_length(:password, min: 6)
     |> validate_format(:email, ~r/(\w+)@([\w.]+)/)
