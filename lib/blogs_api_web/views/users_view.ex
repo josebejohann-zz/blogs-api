@@ -3,9 +3,9 @@ defmodule BlogsAPIWeb.UsersView do
 
   alias BlogsAPI.User
 
-  def render("create.json", %{user: %User{} = user}) do
+  def render("create.json", %{token: token}) do
     %{
-      user: user
+      token: token
     }
   end
 end
