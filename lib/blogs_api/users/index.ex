@@ -1,4 +1,4 @@
-defmodule BlogsAPI.Users.List do
+defmodule BlogsAPI.Users.Index do
   @moduledoc false
 
   alias BlogsAPI.{Repo, User}
@@ -6,7 +6,7 @@ defmodule BlogsAPI.Users.List do
   def call() do
     case Repo.all(User) do
       nil -> {:ok, []}
-      user -> {:ok, user}
+      users -> {:ok, users}
     end
   end
 end

@@ -1,4 +1,4 @@
-defmodule BlogsAPI.Users.Get do
+defmodule BlogsAPI.Users.Show do
   @moduledoc false
 
   alias BlogsAPI.{Error, Repo, User}
