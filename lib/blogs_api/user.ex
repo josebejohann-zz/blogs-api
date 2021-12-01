@@ -4,6 +4,7 @@ defmodule BlogsAPI.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  alias BlogsAPI.Post
   alias Ecto.Changeset
 
   @primary_key {:id, :binary_id, autogenerate: true}
@@ -18,6 +19,8 @@ defmodule BlogsAPI.User do
     field :password, :string, virtual: true
     field :password_hash, :string
     field :image, :string
+
+    has_many :posts, Post
 
     timestamps()
   end
