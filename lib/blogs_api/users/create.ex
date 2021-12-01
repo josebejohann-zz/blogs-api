@@ -2,7 +2,6 @@ defmodule BlogsAPI.Users.Create do
   @moduledoc false
 
   alias BlogsAPI.{Error, Repo, User}
-  alias Ecto.Changeset
 
   def call(params) do
     params
