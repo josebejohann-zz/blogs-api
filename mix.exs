@@ -10,7 +10,8 @@ defmodule BlogsAPI.MixProject do
       compilers: [:phoenix] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
-      deps: deps()
+      deps: deps(),
+      elixirc_paths: elixirc_paths(Mix.env)
     ]
   end
 
@@ -43,7 +44,8 @@ defmodule BlogsAPI.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
       {:bcrypt_elixir, "~> 2.0"},
-      {:guardian, "~> 2.0"}
+      {:guardian, "~> 2.0"},
+      {:ex_machina, "~> 2.7.0", only: :test}
     ]
   end
 
