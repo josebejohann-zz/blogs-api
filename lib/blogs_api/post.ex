@@ -7,8 +7,12 @@ defmodule BlogsAPI.Post do
   alias BlogsAPI.User
 
   @primary_key {:id, :binary_id, autogenerate: true}
+  @foreign_key_type :binary_id
 
-  @required_params [:title, :content]
+  @required_params [:title, :content, :user_id]
+  @update_params [:title, :content]
+
+  @derive {Jason.Encoder, only: [:id, :published, :updated] ++ @required_params}
 
   schema "posts" do
     field :title, :string
@@ -16,12 +20,23 @@ defmodule BlogsAPI.Post do
 
     belongs_to :user, User
 
-    timestamps([{:published, :updated}])
+    timestamps(inserted_at: :published, updated_at: :updated)
   end
 
   def changeset(params) do
     %__MODULE__{}
-    |> cast(params, @required_params)
-    |> validate_required(@required_params)
+    |> changes(params, @required_params)
+  end
+
+  def changeset(struct, params) do
+    struct
+    |> changes(params, @update_params)
+  end
+
+  def changes(struct, params, fields) do
+    struct
+    |> cast(params, fields)
+    |> validate_required(fields)
+    |> foreign_key_constraint(:user_id)
   end
 end
