@@ -15,4 +15,5 @@ defmodule BlogsAPI.Error do
   end
 
   def user_not_found(), do: build(:not_found, "User not found.")
+  def post_not_found(), do: build(:not_found, "Post not found.")
 end
