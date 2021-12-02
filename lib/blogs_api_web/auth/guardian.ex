@@ -11,7 +11,7 @@ defmodule BlogsAPIWeb.Auth.Guardian do
   def resource_from_claims(claims) do
     claims
     |> Map.get("sub")
-    |> GetUser.call()
+    |> GetUser.by_id()
   end
 
   def authenticate(%{"email" => email, "password" => password}) do
