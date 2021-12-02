@@ -24,7 +24,7 @@ defmodule BlogsAPIWeb.UsersController do
   end
 
   def index(conn, _) do
-    with {:ok, users} <- BlogsAPI.list_users() do
+    with {:ok, users} <- BlogsAPI.get_all_users() do
       conn
       |> put_status(:ok)
       |> render("index.json", users: users)
@@ -32,7 +32,7 @@ defmodule BlogsAPIWeb.UsersController do
   end
 
   def show(conn, %{"id" => id}) do
-    with {:ok, %User{} = user} <- BlogsAPI.show_user(id) do
+    with {:ok, %User{} = user} <- BlogsAPI.get_user_by_id(id) do
       conn
       |> put_status(:ok)
       |> render("user.json", user: user)
