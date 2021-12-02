@@ -1,7 +1,7 @@
 defmodule BlogsAPI.Factory do
   use ExMachina.Ecto, repo: BlogsAPI.Repo
 
-  alias BlogsAPI.User
+  alias BlogsAPI.{User, Post}
 
   def user_params_factory do
     %{
@@ -18,6 +18,20 @@ defmodule BlogsAPI.Factory do
       email: "janesmith@email.com",
       password: "123456",
       image: "http://image.url/"
+    }
+  end
+
+  def post_params_factory do
+    %{
+      "title" => "Title",
+      "content" => "Content"
+    }
+  end
+
+  def post_factory do
+    %Post{
+      title: "Title",
+      content: "Content",
     }
   end
 end
