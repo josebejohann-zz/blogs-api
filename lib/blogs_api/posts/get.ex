@@ -12,7 +12,7 @@ defmodule BlogsAPI.Posts.Get do
   end
 
   def by_id(id) do
-    case Repo.get(Post, id) do
+    case Repo.get(from(p in Post, preload: [:user]), id) do
       nil -> {:error, Error.post_not_found()}
       post -> {:ok, post}
     end
