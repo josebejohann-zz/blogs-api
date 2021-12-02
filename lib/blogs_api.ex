@@ -7,11 +7,11 @@ defmodule BlogsAPI do
   alias BlogsAPI.Users.Get, as: ShowUser
 
   alias BlogsAPI.Posts.Create, as: CreatePost
-  alias BlogsAPI.Posts.Index, as: ListPosts
-  alias BlogsAPI.Posts.Search, as: SearchPosts
-  alias BlogsAPI.Posts.Show, as: ShowPost
-  alias BlogsAPI.Posts.Update, as: UpdatePost
   alias BlogsAPI.Posts.Delete, as: DeletePost
+  alias BlogsAPI.Posts.Get, as: ListPosts
+  alias BlogsAPI.Posts.Get, as: ShowPost
+  alias BlogsAPI.Posts.Search, as: SearchPosts
+  alias BlogsAPI.Posts.Update, as: UpdatePost
 
   defdelegate create_user(params), to: CreateUser, as: :call
   defdelegate get_all_users(), to: ListUsers, as: :call
