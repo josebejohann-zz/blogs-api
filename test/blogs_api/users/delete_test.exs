@@ -3,7 +3,7 @@ defmodule BlogsAPI.Users.DeleteTest do
 
   import BlogsAPI.Factory
 
-  alias BlogsAPI.{Error, Repo}
+  alias BlogsAPI.Error
   alias BlogsAPI.Users.Delete
 
   describe "call/1" do

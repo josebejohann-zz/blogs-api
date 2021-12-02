@@ -4,7 +4,7 @@ defmodule BlogsAPI.Users.GetTest do
   import BlogsAPI.Factory
 
   alias BlogsAPI.{Error, User}
-  alias BlogsAPI.Users.{Create, Get}
+  alias BlogsAPI.Users.Get
 
   describe "call/0" do
     setup do
