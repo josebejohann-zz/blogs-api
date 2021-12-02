@@ -19,6 +19,8 @@ defmodule BlogsAPIWeb.Router do
   scope "/", BlogsAPIWeb do
     pipe_through :auth
 
+    get "/post/:search", PostsController, :search
     resources "/user", UsersController, except: [:new, :edit, :create]
+    resources "/post", PostsController, except: [:new, :edit]
   end
 end
