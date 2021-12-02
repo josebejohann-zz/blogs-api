@@ -19,8 +19,7 @@ defmodule BlogsAPIWeb.PostsController do
   end
 
   def index(conn, _) do
-    with {:ok, posts} <- BlogsAPI.list_posts() do
-      IO.inspect(posts)
+    with {:ok, posts} <- BlogsAPI.get_all_posts() do
       conn
       |> put_status(:ok)
       |> render("index.json", posts: posts)
@@ -28,10 +27,10 @@ defmodule BlogsAPIWeb.PostsController do
   end
 
   def show(conn, %{"id" => id}) do
-    with {:ok, post} <- BlogsAPI.show_post(id) do
+    with {:ok, post} <- BlogsAPI.get_post_by_id(id) do
       conn
       |> put_status(:ok)
-      |> render("post.json", post: post)
+      |> render("show.json", post: post)
     end
   end
 
@@ -44,6 +43,7 @@ defmodule BlogsAPIWeb.PostsController do
           conn
           |> put_status(:ok)
           |> render("post.json", post: post)
+
         false ->
           conn
           |> put_status(:unauthorized)
@@ -52,13 +52,13 @@ defmodule BlogsAPIWeb.PostsController do
     end
   end
 
-  def search(conn, %{"q" => query}) do
-    with {:ok, posts} <- BlogsAPI.search_posts(query) do
-      conn
-      |> put_status(:ok)
-      |> render("index.json", posts: posts)
-    end
-  end
+  # def search(conn, %{"q" => query}) do
+  #   with {:ok, posts} <- BlogsAPI.search_posts(query) do
+  #     conn
+  #     |> put_status(:ok)
+  #     |> render("index.json", posts: posts)
+  #   end
+  # end
 
   def delete(conn, %{"id" => id}) do
     user = GuardianPlug.current_resource(conn)
@@ -69,6 +69,7 @@ defmodule BlogsAPIWeb.PostsController do
           conn
           |> put_status(:no_content)
           |> text("")
+
         false ->
           conn
           |> put_status(:unauthorized)

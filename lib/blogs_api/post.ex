@@ -12,7 +12,7 @@ defmodule BlogsAPI.Post do
   @required_params [:title, :content, :user_id]
   @update_params [:title, :content]
 
-  @derive {Jason.Encoder, only: [:id, :published, :updated] ++ @required_params}
+  @derive {Jason.Encoder, only: [:id] ++ @required_params ++ [:user, :published, :updated]}
 
   schema "posts" do
     field :title, :string
@@ -36,7 +36,7 @@ defmodule BlogsAPI.Post do
   def changes(struct, params, fields) do
     struct
     |> cast(params, fields)
+    |> cast_assoc(:user)
     |> validate_required(fields)
-    |> foreign_key_constraint(:user_id)
   end
 end
