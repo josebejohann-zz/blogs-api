@@ -3,6 +3,7 @@ defmodule BlogsAPIWeb.UsersControllerTest do
 
   import BlogsAPI.Factory
 
+  alias BlogsAPI.{Repo, User}
   alias BlogsAPIWeb.Auth.Guardian
 
   describe "create/2" do
@@ -16,40 +17,6 @@ defmodule BlogsAPIWeb.UsersControllerTest do
 
       assert %{"token" => _} = response
     end
-
-    test "throws when invalid params are given", %{conn: conn} do
-      params = build(:user_params, %{"displayName" => "Foo", "email" => "Bar", "password" => "1234"})
-
-      response =
-        conn
-        |> post(Routes.users_path(conn, :create, params))
-        |> json_response(:bad_request)
-
-      assert %{"message" => ["displayName should be at least 8 character(s)", "email has invalid format", "password should be at least 6 character(s)"]} = response
-    end
-
-    test "throws when required params are not given", %{conn: conn} do
-      params = build(:user_params, %{"email" => "", "password" => ""})
-
-      response =
-        conn
-        |> post(Routes.users_path(conn, :create, params))
-        |> json_response(:bad_request)
-
-      %{"message" => ["email can't be blank", "password can't be blank"]} = response
-    end
-
-    test "throws when trying to create a user using already taken email", %{conn: conn} do
-      user = insert(:user, Bcrypt.add_hash("123456"))
-      params = build(:user_params, %{"email" => user.email})
-
-      response =
-        conn
-        |> post(Routes.users_path(conn, :create, params))
-        |> json_response(:bad_request)
-
-      %{"message" => ["email has already been taken"]} = response
-    end
   end
 
   describe "sign_in/2" do
@@ -58,56 +25,105 @@ defmodule BlogsAPIWeb.UsersControllerTest do
 
       response =
         conn
-        |> post(Routes.users_path(conn, :sign_in, %{"email" => user.email, "password" => user.password}))
+        |> post(
+          Routes.users_path(conn, :sign_in, %{"email" => user.email, "password" => user.password})
+        )
         |> json_response(:ok)
 
       assert %{"token" => _} = response
-    end
-
-    test "throws when an invalid email is passed", %{conn: conn} do
-      response =
-        conn
-        |> post(Routes.users_path(conn, :sign_in, %{"email" => "invalid_email", "password" => "any_password"}))
-        |> json_response(:not_found)
-
-      assert %{"message" => "User not found."} = response
-    end
-
-    test "throws when an invalid password is passed", %{conn: conn} do
-      response =
-        conn
-        |> post(Routes.users_path(conn, :sign_in, %{"email" => "any_email", "password" => "any_password"}))
-        |> json_response(:not_found)
-
-      assert %{"message" => "User not found."} = response
     end
   end
 
   describe "index/2" do
     setup %{conn: conn} do
-      user = insert(:user, Bcrypt.add_hash("123456"))
+      user =
+        insert(
+          :user,
+          Enum.concat(
+            %{id: "fec137fd-fe09-4559-bde6-b1501606c76a"},
+            Bcrypt.add_hash("123456")
+          )
+        )
+
       {:ok, token, _claims} = Guardian.encode_and_sign(user)
       conn = put_req_header(conn, "authorization", "Bearer #{token}")
 
-      {:ok, conn: conn}
+      {:ok, conn: conn, user: user}
     end
 
-    test "list all users if authenticated", %{conn: conn} do
+    test "returns an array containing all registered users", %{conn: conn} do
       response =
         conn
         |> get(Routes.users_path(conn, :index))
         |> json_response(:ok)
+
+      assert [
+               %{
+                 "displayName" => "Jane Smith",
+                 "email" => "janesmith@email.com",
+                 "id" => "fec137fd-fe09-4559-bde6-b1501606c76a",
+                 "image" => "http://image.url/"
+               }
+             ] = response
+    end
+  end
+
+  describe "show/2" do
+    setup %{conn: conn} do
+      user =
+        insert(
+          :user,
+          Enum.concat(
+            %{id: "fec137fd-fe09-4559-bde6-b1501606c76a"},
+            Bcrypt.add_hash("123456")
+          )
+        )
+
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn, user: user}
     end
 
-    test "throws if not authenticated", %{conn: conn} do
-      conn = put_req_header(conn, "authorization", "")
-
+    test "returns a user if it exists", %{conn: conn, user: user} do
       response =
         conn
-        |> get(Routes.users_path(conn, :index))
-        |> json_response(:unauthorized, %{"message" => "foo"})
+        |> get(Routes.users_path(conn, :show, user.id))
+        |> json_response(:ok)
 
-      assert response == "foo"
+      assert %{
+               "displayName" => "Jane Smith",
+               "email" => "janesmith@email.com",
+               "id" => "fec137fd-fe09-4559-bde6-b1501606c76a",
+               "image" => "http://image.url/"
+             } = response
+    end
+  end
+
+  describe "delete/2" do
+    setup %{conn: conn} do
+      user =
+        insert(
+          :user,
+          Enum.concat(
+            %{id: "fec137fd-fe09-4559-bde6-b1501606c76a"},
+            Bcrypt.add_hash("123456")
+          )
+        )
+
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn, user: user}
+    end
+
+    test "deletes a user if it exists", %{conn: conn, user: user} do
+      response =
+        conn
+        |> delete(Routes.users_path(conn, :delete, user.id))
+        |> response(:no_content)
+
+      assert response == ""
     end
   end
 end

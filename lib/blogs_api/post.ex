@@ -36,7 +36,7 @@ defmodule BlogsAPI.Post do
   def changes(struct, params, fields) do
     struct
     |> cast(params, fields)
-    |> cast_assoc(:user)
     |> validate_required(fields)
+    |> foreign_key_constraint(:user_id)
   end
 end
