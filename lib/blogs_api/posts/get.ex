@@ -2,7 +2,7 @@ defmodule BlogsAPI.Posts.Get do
   @moduledoc false
   import Ecto.Query, only: [from: 2]
 
-  alias BlogsAPI.{Post, Repo}
+  alias BlogsAPI.{Error, Post, Repo}
 
   def call() do
     case Repo.all(from(p in Post, preload: [:user])) do
