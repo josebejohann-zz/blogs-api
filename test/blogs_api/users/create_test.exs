@@ -1,12 +1,14 @@
 defmodule BlogsAPI.Users.CreateTest do
   use BlogsAPI.DataCase, async: true
+
   import BlogsAPI.Factory
+
   alias BlogsAPI.{Error, User}
   alias BlogsAPI.Users.Create
 
   describe "call/1" do
     test "creates a user if correct params are given" do
-      valid_params = build(:user)
+      valid_params = build(:user_params)
 
       response = Create.call(valid_params)
 
@@ -14,7 +16,7 @@ defmodule BlogsAPI.Users.CreateTest do
     end
 
     test "throws when required params are not given" do
-      invalid_required_params = build(:user, %{"email" => "", "password" => ""})
+      invalid_required_params = build(:user_params, %{"email" => "", "password" => ""})
 
       response = Create.call(invalid_required_params)
 
@@ -23,7 +25,7 @@ defmodule BlogsAPI.Users.CreateTest do
     end
 
     test "throws when invalid params are given" do
-      invalid_params = build(:user, %{"displayName" => "foo", "email" => "bar", "password" => "123"})
+      invalid_params = build(:user_params, %{"displayName" => "foo", "email" => "bar", "password" => "123"})
 
       response = Create.call(invalid_params)
 
@@ -34,9 +36,9 @@ defmodule BlogsAPI.Users.CreateTest do
     end
 
     test "throws when already taken e-mail is given" do
-      Create.call(build(:user))
+      Create.call(build(:user_params))
 
-      already_taken_email = build(:user)
+      already_taken_email = build(:user_params)
 
       response = Create.call(already_taken_email)
 

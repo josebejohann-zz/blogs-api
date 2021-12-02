@@ -1,9 +1,16 @@
-defmodule BlogsAPI.Users.Show do
+defmodule BlogsAPI.Users.Get do
   @moduledoc false
 
   alias BlogsAPI.{Error, Repo, User}
 
-  def call(id) do
+  def call() do
+    case Repo.all(User) do
+      nil -> {:ok, []}
+      users -> {:ok, users}
+    end
+  end
+
+  def by_id(id) do
     case Repo.get(User, id) do
       nil -> {:error, Error.user_not_found()}
       user -> {:ok, user}
