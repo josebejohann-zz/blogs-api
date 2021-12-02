@@ -7,9 +7,9 @@ defmodule BlogsAPI.Repo.Migrations.CreatePostsTable do
     create table :posts do
       add :title, :string
       add :content, :string
-      add :userId, references(:users, type: :binary_id)
+      add :user_id, references(:users, type: :binary_id, on_delete: :delete_all)
 
-      timestamps([{:published, :updated}])
+      timestamps(inserted_at: :published, updated_at: :updated)
     end
   end
 end
