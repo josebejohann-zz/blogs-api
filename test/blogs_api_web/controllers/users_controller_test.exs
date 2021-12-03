@@ -16,10 +16,27 @@ defmodule BlogsAPIWeb.UsersControllerTest do
 
       assert %{"token" => _} = response
     end
+
+    test "throws when invalid params are given", %{conn: conn} do
+      invalid_params = %{"displayName" => "Invalid", "email" => "invalid", "password" => "12345"}
+
+      response =
+        conn
+        |> post(Routes.users_path(conn, :create, invalid_params))
+        |> json_response(:bad_request)
+
+      assert %{
+               "message" => [
+                 "displayName should be at least 8 character(s)",
+                 "email has invalid format",
+                 "password should be at least 6 character(s)"
+               ]
+             } = response
+    end
   end
 
   describe "sign_in/2" do
-    test "returns a JWT token when valid params are given", %{conn: conn} do
+    test "returns a JWT token when valid params are given to authentication", %{conn: conn} do
       user = insert(:user, Bcrypt.add_hash("123456"))
 
       response =
@@ -30,6 +47,45 @@ defmodule BlogsAPIWeb.UsersControllerTest do
         |> json_response(:ok)
 
       assert %{"token" => _} = response
+    end
+
+    test "throws when invalid password is given to authentication", %{conn: conn} do
+      user = insert(:user, Bcrypt.add_hash("123456"))
+
+      response =
+        conn
+        |> post(
+          Routes.users_path(conn, :sign_in, %{
+            email: user.email,
+            password: "invalid_password"
+          })
+        )
+        |> json_response(:bad_request)
+
+      assert %{"message" => "Invalid fields."} = response
+    end
+
+    test "throws when no user is found with the given email", %{conn: conn} do
+      response =
+        conn
+        |> post(
+          Routes.users_path(conn, :sign_in, %{
+            email: "invalid_user@mail.com",
+            password: "any_password"
+          })
+        )
+        |> json_response(:not_found)
+
+      assert %{"message" => "User not found."} = response
+    end
+
+    test "throws when no params are given to authentication", %{conn: conn} do
+      response =
+        conn
+        |> post(Routes.users_path(conn, :sign_in, %{}))
+        |> json_response(:bad_request)
+
+      assert %{"message" => "Empty fields are not allowed."} = response
     end
   end
 
