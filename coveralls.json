@@ -1,0 +1,12 @@
+{
+  "skip_files": [
+    "lib/blogs_api_web.ex",
+    "lib/blogs_api/application.ex",
+    "lib/blogs_api_web/telemetry.ex",
+    "lib/blogs_api_web/channels/user_socket.ex",
+    "lib/blogs_api_web/views/error_helpers.ex",
+    "test/support/conn_case.ex",
+    "test/support/data_case.ex",
+    "test/support/channel_case.ex"
+  ]
+}
