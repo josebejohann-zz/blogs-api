@@ -3,7 +3,6 @@ defmodule BlogsAPIWeb.UsersControllerTest do
 
   import BlogsAPI.Factory
 
-  alias BlogsAPI.{Repo, User}
   alias BlogsAPIWeb.Auth.Guardian
 
   describe "create/2" do
