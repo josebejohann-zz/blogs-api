@@ -37,6 +37,19 @@ defmodule BlogsAPIWeb.PostsControllerTest do
                "userId" => "fec137fd-fe09-4559-bde6-b1501606c76a"
              } = response
     end
+
+    test "throws when user is unauthenticated", %{conn: conn, user: user} do
+      conn = put_req_header(conn, "authorization", "")
+
+      params = build(:post_params, %{"userId" => user.id})
+
+      response =
+        conn
+        |> post(Routes.posts_path(conn, :create, params))
+        |> response(:unauthorized)
+
+      assert "{\"message\":\"Expired or invalid token.\"}" = response
+    end
   end
 
   describe "index/2" do
