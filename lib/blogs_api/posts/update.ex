@@ -1,6 +1,4 @@
 defmodule BlogsAPI.Posts.Update do
-  @moduledoc false
-
   alias BlogsAPI.{Error, Post, Repo}
 
   def call(%{"id" => id} = params) do

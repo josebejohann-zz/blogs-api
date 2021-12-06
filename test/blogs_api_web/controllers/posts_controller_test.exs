@@ -156,7 +156,7 @@ defmodule BlogsAPIWeb.PostsControllerTest do
     end
 
     test "lists all posts from a query search", %{conn: conn, user: user} do
-      post = insert(:post, %{id: "050b3079-a6fd-42bd-90a7-9ba5e0a2c4f3", user_id: user.id})
+      insert(:post, %{id: "050b3079-a6fd-42bd-90a7-9ba5e0a2c4f3", user_id: user.id})
 
       response =
         conn
@@ -181,7 +181,7 @@ defmodule BlogsAPIWeb.PostsControllerTest do
              ] = response
     end
 
-    test "returns an empty array if no post matches the query search", %{conn: conn, user: user} do
+    test "returns an empty array if no post matches the query search", %{conn: conn} do
       response =
         conn
         |> get(Routes.posts_path(conn, :search, %{"q" => "Foo"}))

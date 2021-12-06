@@ -1,6 +1,4 @@
 defmodule BlogsAPIWeb.Auth.ErrorHandler do
-  @moduledoc false
-
   alias Guardian.Plug.ErrorHandler
   alias Plug.Conn
 

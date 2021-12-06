@@ -1,6 +1,4 @@
 defmodule BlogsAPI.Users.Create do
-  @moduledoc false
-
   alias BlogsAPI.{Error, Repo, User}
 
   def call(params) do

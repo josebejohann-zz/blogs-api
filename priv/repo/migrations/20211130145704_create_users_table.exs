@@ -1,5 +1,5 @@
 defmodule BlogsAPI.Repo.Migrations.CreateUsersTable do
-  @moduledoc false
+  @ false
 
   use Ecto.Migration
 

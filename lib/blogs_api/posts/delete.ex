@@ -1,6 +1,4 @@
 defmodule BlogsAPI.Posts.Delete do
-  @moduledoc false
-
   alias BlogsAPI.{Error, Repo, Post}
 
   def call(id) do

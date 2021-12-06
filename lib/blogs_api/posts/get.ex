@@ -1,5 +1,4 @@
 defmodule BlogsAPI.Posts.Get do
-  @moduledoc false
   import Ecto.Query, only: [from: 2]
 
   alias BlogsAPI.{Error, Post, Repo}

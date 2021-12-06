@@ -1,6 +1,4 @@
 defmodule BlogsAPI.Users.Get do
-  @moduledoc false
-
   alias BlogsAPI.{Error, Repo, User}
 
   def call() do

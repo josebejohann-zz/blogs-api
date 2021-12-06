@@ -1,6 +1,4 @@
 defmodule BlogsAPI do
-  @moduledoc false
-
   alias BlogsAPI.Users.Create, as: CreateUser
   alias BlogsAPI.Users.Delete, as: DeleteUser
   alias BlogsAPI.Users.Get, as: ListUsers

@@ -1,6 +1,4 @@
 defmodule BlogsAPIWeb.Auth.Guardian do
-  @moduledoc false
-
   use Guardian, otp_app: :blogs_api
 
   alias BlogsAPI.{Error, User}
