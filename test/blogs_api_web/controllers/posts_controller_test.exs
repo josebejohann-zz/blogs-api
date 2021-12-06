@@ -138,6 +138,59 @@ defmodule BlogsAPIWeb.PostsControllerTest do
     end
   end
 
+  describe "search/2" do
+    setup %{conn: conn} do
+      user =
+        insert(
+          :user,
+          Enum.concat(
+            %{id: "fec137fd-fe09-4559-bde6-b1501606c76a"},
+            Bcrypt.add_hash("123456")
+          )
+        )
+
+      {:ok, token, _claims} = Guardian.encode_and_sign(user)
+      conn = put_req_header(conn, "authorization", "Bearer #{token}")
+
+      {:ok, conn: conn, user: user}
+    end
+
+    test "lists all posts from a query search", %{conn: conn, user: user} do
+      post = insert(:post, %{id: "050b3079-a6fd-42bd-90a7-9ba5e0a2c4f3", user_id: user.id})
+
+      response =
+        conn
+        |> get(Routes.posts_path(conn, :search, %{"q" => "Title"}))
+        |> json_response(:ok)
+
+      assert [
+               %{
+                 "content" => "Content",
+                 "id" => "050b3079-a6fd-42bd-90a7-9ba5e0a2c4f3",
+                 "published" => _,
+                 "title" => "Title",
+                 "updated" => _,
+                 "user" => %{
+                   "displayName" => "Jane Smith",
+                   "email" => "janesmith@email.com",
+                   "id" => "fec137fd-fe09-4559-bde6-b1501606c76a",
+                   "image" => "http://image.url/"
+                 },
+                 "user_id" => "fec137fd-fe09-4559-bde6-b1501606c76a"
+               }
+             ] = response
+    end
+
+    test "returns an empty array if no post matches the query search", %{conn: conn, user: user} do
+      response =
+        conn
+        |> get(Routes.posts_path(conn, :search, %{"q" => "Foo"}))
+        |> json_response(:ok)
+
+      assert [] = response
+    end
+  end
+
   describe "update/2" do
     setup %{conn: conn} do
       user =
