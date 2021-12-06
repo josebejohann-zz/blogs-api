@@ -52,13 +52,13 @@ defmodule BlogsAPIWeb.PostsController do
     end
   end
 
-  # def search(conn, %{"q" => query}) do
-  #   with {:ok, posts} <- BlogsAPI.search_posts(query) do
-  #     conn
-  #     |> put_status(:ok)
-  #     |> render("index.json", posts: posts)
-  #   end
-  # end
+  def search(conn, params) do
+    with {:ok, posts} <- BlogsAPI.search_posts(params) do
+      conn
+      |> put_status(:ok)
+      |> render("index.json", posts: posts)
+    end
+  end
 
   def delete(conn, %{"id" => id}) do
     user = GuardianPlug.current_resource(conn)
